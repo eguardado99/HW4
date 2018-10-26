@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ernesto HW4 XMLHttp Request</title>
+    <style>
+        body{color: blueviolet;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-style: italic;
+    </style>
+</head>
+<body>
+    <h1>HW 4 XMLHttp</h1>
+    <button id = button1>Load Emails</button>
+    <button id = button2>Load Users</button>
+    <div>
+        <h3>User emails from XML HttpRequest:</h3>
+        <div id='emails'></div>
+        <h3>User names from Fetch</h3>
+        <div id='users'></div>
+    </div>
+
+
+    <script>
+    //GET ELEMENT FROM DOCUMENT    
+    document.getElementById('button1').addEventListener('click',loadEmails);
+    document.getElementById('button2').addEventListener('click', loadUsers);
+    
+    //LOAD USER EMAILS
+    function loadEmails(){
+
+    var req = new XMLHttpRequest();
+    req.open('GET', 'https://jsonplaceholder.typicode.com/users', true);
+
+    req.onload = function(){
+    if(this.status == 200){
+        var users = JSON.parse(this.responseText);
+        // console.log('old xml:', this, 'xhr:::',xhr, 'users', users, 'responseText', this.responseText)
+        
+        var output = '';
+        for(var i in users){
+            // console.log(output)
+            output += '<div class="emails">' + users[i].email + '</div>';
+        }
+        document.getElementById('emails').innerHTML = output; 
+    }
+}
+req.send();  
+}
+
+ //LOAD USERS
+ function loadUsers(){
+      fetch('https://jsonplaceholder.typicode.com/users')
+      .then((res) => res.json())
+      .then((data) => {
+        //   console.log('new fetch:', data)
+        // let output = '<h2 class="mb-4">Users</h2>';
+        let output = '';
+        data.forEach(function(user){   //data.forEach(function(user)
+          output += `<li class="list-group-item">Name: ${user.username}</li>`;
+        });
+        document.getElementById('users').innerHTML = output;
+      })
+    }
+    
+    </script>
+
+    
+</body>
+</html>
